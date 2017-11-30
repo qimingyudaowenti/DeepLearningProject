@@ -80,7 +80,7 @@ for each in quant_features:
 # 
 # 我们将大约最后 21 天的数据保存为测试数据集，这些数据集会在训练完网络后使用。我们将使用该数据集进行预测，并与实际的骑行人数进行对比。
 
-# In[8]:
+# In[7]:
 
 # Save data for approximately the last 21 days 
 test_data = data[-21*24:]
@@ -96,7 +96,7 @@ test_features, test_targets = test_data.drop(target_fields, axis=1), test_data[t
 
 # 我们将数据拆分为两个数据集，一个用作训练，一个在网络训练完后用来验证网络。因为数据是有时间序列特性的，所以我们用历史数据进行训练，然后尝试预测未来数据（验证数据集）。
 
-# In[9]:
+# In[8]:
 
 # Hold out the last 60 days or so of the remaining data as a validation set
 train_features, train_targets = features[:-60*24], targets[:-60*24]
@@ -125,7 +125,7 @@ val_features, val_targets = features[-60*24:], targets[-60*24:]
 # 
 #   
 
-# In[55]:
+# In[9]:
 
 class NeuralNetwork(object):
     def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate):
@@ -230,7 +230,7 @@ class NeuralNetwork(object):
         return final_outputs
 
 
-# In[14]:
+# In[10]:
 
 def MSE(y, Y):
     return np.mean((y-Y)**2)
@@ -240,7 +240,7 @@ def MSE(y, Y):
 # 
 # 运行这些单元测试，检查你的网络实现是否正确。这样可以帮助你确保网络已正确实现，然后再开始训练网络。这些测试必须成功才能通过此项目。
 
-# In[53]:
+# In[11]:
 
 import unittest
 
@@ -322,15 +322,15 @@ unittest.TextTestRunner().run(suite)
 # 
 # 隐藏节点越多，模型的预测结果就越准确。尝试不同的隐藏节点的数量，看看对性能有何影响。你可以查看损失字典，寻找网络性能指标。如果隐藏单元的数量太少，那么模型就没有足够的空间进行学习，如果太多，则学习方向就有太多的选择。选择隐藏单元数量的技巧在于找到合适的平衡点。
 
-# In[90]:
+# In[17]:
 
 import sys
 
 ### Set the hyperparameters here ###
 #init:100, 0.1, 2, 1
-iterations = 1000
-learning_rate = 0.1
-hidden_nodes = 4
+iterations = 8000
+learning_rate = 0.7
+hidden_nodes = 10
 output_nodes = 1
 
 N_i = train_features.shape[1]
@@ -354,7 +354,7 @@ for ii in range(iterations):
     losses['validation'].append(val_loss)
 
 
-# In[92]:
+# In[18]:
 
 plt.plot(losses['train'], label='Training loss')
 plt.plot(losses['validation'], label='Validation loss')
@@ -366,7 +366,7 @@ _ = plt.ylim()
 # 
 # 使用测试数据看看网络对数据建模的效果如何。如果完全错了，请确保网络中的每步都正确实现。
 
-# In[93]:
+# In[19]:
 
 fig, ax = plt.subplots(figsize=(8,4))
 
